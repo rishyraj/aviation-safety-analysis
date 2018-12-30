@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Aviation Safety Analysis</title>
+        <meta charset="utf-8">
+        <!script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"><!/script>    
+    </head>
+    <body>
+        <div>
+            Enter Airline: <input id="airline" type="text" autocomplete="on"><br>
+            <button name="Submit" onclick="display()">Submit</button> 
+        </div>
+        <div>
+            <img id='graph' src='' style="display:none;width:1000px;height:800px"/>
+        </div>
+        <script>
+            function display(){
+                var airline = document.getElementById("airline").value
+                airline = airline.replace(" ","-")
+                var pic = 'data/plots/'+airline.toLowerCase()+'.png'
+                document.getElementById('graph').src = pic
+                document.getElementById('graph').style.display='block'
+            }
+        </script>
+    </body>
+</html>
