@@ -1,6 +1,6 @@
 import numpy as np
-import pandas as pd
 import matplotlib.pyplot as plt
+import mplcursors
 import csv
 
 def remDup(dup):
@@ -17,11 +17,14 @@ def convertToInt(ar):
         lst.append(int(float(a)))
     return lst
 
-
-airline = raw_input("Enter an Airline: ")
+#for 2.7
+#airline = raw_input("Enter an Airline: ")
+#for 3.x.x
+airline = input("Enter an Airline: ")
 airlineFound = False
 
 #print(airline)
+
 
 dates = []
 fatalities=[]
@@ -37,6 +40,9 @@ with open('data/planecrashinfo.csv') as csvFile:
             dates.append(row['date'][row['date'].index(', ')+2:len(row['date'])])
             if '?' not in fatalities_rev:
                 fatalities.append(int(float(fatalities_rev)))
+        else:
+            dates.append(row['date'][row['date'].index(', ')+2:len(row['date'])])
+            fatalities.append(0)
         if '?' not in fatalities_rev:
             dates_aggregate.append(row['date'][row['date'].index(', ')+2:len(row['date'])])
             fatalities_aggregate.append(int(float(fatalities_rev)))
@@ -73,13 +79,15 @@ if airlineFound:
     print("last year:"+str(dates_clean[len(dates_clean)-1]))
     print("Highest Fatality/year:"+str(max(fatalities_clean)))
     
-    plt.plot(dates_clean,fatalities_clean,'r',dates_aggregate_clean,fatalities_average,'g')
-    plt.axis([dates_clean[0],dates_clean[len(dates_clean)-1],0,max(fatalities_clean)+40])
+    lines = plt.plot(dates_clean,fatalities_clean,'r',dates_aggregate_clean,fatalities_average,'g')
+    plt.axis([dates_clean[0],dates_clean[len(dates_clean)-1],0,max(fatalities_clean)+50])
     plt.ylabel('Fatalities/year')
     plt.xlabel('Year')
     plt.title(airline+' crashes over its history compared with the average crashes per year')
     plt.legend([airline+' fatalities','Overall Average'])
-    plt.show()
+    plt.gcf().set_size_inches(14.5, 10.5)
+    mplcursors.cursor(lines, hover=True)
+    plt.show(lines)
 else:
     print("Whoops! Airline not Found!")
     print("This means that the airline has never had a fatal accident or crash, or doesn't exist in our database.")
